@@ -7,8 +7,8 @@ import sys
 with st.sidebar:
     st.markdown("## Model Settings")
     desire_model = st.text_input("Model Name", value="llama3.1:8b")
-    st.markdown("[View the source code](https://github.com/streamlit/llm-examples/blob/main/Chatbot.py)")
-    st.markdown("[![Open in GitHub Codespaces](https://github.com/codespaces.new/streamlit/llm-examples?quickstart=1)]")
+    st.markdown("[View the source code](https://github.com/ghassenTn/ChatWithLLam3-8b/blob/main/main.py)")
+    st.markdown("[![Open in GitHub Codespaces](https://github.com/ghassenTn/ChatWithLLam3-8b]")
 
 # Initialize Streamlit app
 st.title("💬 LLaMA 3.1 Chatbot")
