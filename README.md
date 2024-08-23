@@ -1,3 +1,11 @@
+
+
+
+
+![Screenshot from 2024-08-23 10-37-07](https://github.com/user-attachments/assets/fa5b4c3a-af87-40c9-8c68-c7dbee1100f7)
+
+
+
 Project Installation and Setup Guide
 Installation Steps
 Step 1: Install Ollama
