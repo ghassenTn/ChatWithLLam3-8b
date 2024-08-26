@@ -6,13 +6,13 @@ import sys
 # Sidebar for model selection
 with st.sidebar:
     st.markdown("## Model Settings")
-    desire_model = st.text_input("Model Name", value="llama3.1:8b")
+    desire_model = st.text_input("Model Name", value="llama3.1:8b",disabled=True)
     st.markdown("[View the source code](https://github.com/ghassenTn/ChatWithLLam3-8b/blob/main/main.py)")
     st.markdown("[![Open in GitHub Codespaces](https://github.com/ghassenTn/ChatWithLLam3-8b]")
 
 # Initialize Streamlit app
-st.title("💬 LLaMA 3.1 Chatbot")
-st.caption("🚀 A Streamlit chatbot powered by LLaMA 3.1")
+st.title("💬 LLaMA 3.1 Chat ")
+st.caption("🚀 A Streamlit chat powered by ghassen using  LLaMA 3.1")
 
 # Check if session state has been initialized
 if "messages" not in st.session_state:
