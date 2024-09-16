@@ -1,5 +1,0 @@
-ollama==0.3.1
-pandas==2.2.2
-pillow==10.4.0
-plotly==5.23.0
-streamlit==1.37.0
