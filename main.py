@@ -1,67 +1,69 @@
+from matplotlib import pyplot as plt
 import streamlit as st
 import ollama
 import io
 import sys
-
+import plotly.graph_objects as go  # Import Plotly
+import pandas as pd
 # Sidebar for model selection
 with st.sidebar:
     st.markdown("## Model Settings")
-    desire_model = st.text_input("Model Name", value="llama3.1:8b",disabled=True)
+    desire_model = st.text_input("Model Name", value="llama3.1:8b", disabled=True)
     st.markdown("[View the source code](https://github.com/ghassenTn/ChatWithLLam3-8b/blob/main/main.py)")
-    st.markdown("[![Open in GitHub Codespaces](https://github.com/ghassenTn/ChatWithLLam3-8b]")
 
-# Initialize Streamlit app
-st.title("💬 LLaMA 3.1 Chat ")
-st.caption("🚀 A Streamlit chat powered by ghassen using  LLaMA 3.1")
+st.caption("🚀 A Streamlit chat powered by ghassen using LLaMA 3.1")
 
-# Check if session state has been initialized
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
 
-# Display chat messages
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
 
-# Input for user prompt
 if prompt := st.chat_input("Enter your question:"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "user", "content":f"{prompt} without description" })
     st.chat_message("user").write(prompt)
-
-    # Placeholder for progressive response display
     response_placeholder = st.empty()
-
-    # Call Ollama API and get response
     with st.spinner("Thinking..."):
         response = ollama.chat(desire_model, messages=st.session_state.messages)
         response_content = response["message"]["content"]
 
-    # Add the response to session state
     st.session_state.messages.append({"role": "assistant", "content": response_content})
-    st.chat_message("assistant").write(response_content)
+    # st.chat_message("assistant").write(response_content)
 
-    # Display and execute the response if it's Python code
     if "```python" in response_content:
         st.write("### Executing the generated Python code:")
         
-        # Extract the code block
         code_block = response_content.split("```python")[1].split("```")[0]
         
-        # Display the code
         st.code(code_block, language="python")
         
-        # Execute the code block and capture output
         with st.spinner("Executing..."):
             old_stdout = sys.stdout
             redirected_output = sys.stdout = io.StringIO()
             try:
                 exec(code_block)
                 exec_output = redirected_output.getvalue()
+
+                # If a Plotly chart was created
+                if 'fig' in locals():  
+                    with st.expander("Plotly Chart", expanded=True):
+                        st.plotly_chart(fig)  
+                elif 'sns' in locals():
+                    with st.expander("Seaborn Chart", expanded=True):
+                        st.pyplot(plt)  # Display Seaborn chart directly in Streamlit
+                elif 'plt' in locals():
+                    with st.expander("Matplotlib Chart", expanded=True):
+                        st.pyplot(plt)
+                else:
+                    st.write("No Plotly figure was generated.")
+
             except Exception as e:
                 exec_output = str(e)
             finally:
                 sys.stdout = old_stdout
 
-        # Display execution result
         st.code(exec_output)
 
-   
+        # Clear the current figure after displaying it
+        plt.clf()  # Clear the figure
+    st.write(response_content)
